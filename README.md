@@ -28,9 +28,14 @@
         }
 
         .container {
+            width: 300px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             text-align: center;
             background: rgba(128, 128, 128, 0.8);
-            padding: 30px;
             border-radius: 10px;
             border: 2px solid orange;
             position: relative;
