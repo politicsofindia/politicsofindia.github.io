@@ -73,7 +73,7 @@
     </div>
     <script>
         function startGame() {
-            window.location.href = 'game.html'; // Adjust the path to your game page
+            window.location.href = 'start.html'; // Adjust the path to your game page
         }
     </script>
 </body>
