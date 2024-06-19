@@ -1,17 +1,27 @@
 import aiosqlite
 
-async def init_db():
-    async with aiosqlite.connect('users.db') as db:
-        await db.execute('''
-            CREATE TABLE IF NOT EXISTS users (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                email TEXT NOT NULL UNIQUE,
-                password TEXT NOT NULL
-            )
-        ''')
-        await db.commit()
+DB_NAME = 'users.db'
 
-async def add_user(email, password):
-    async with aiosqlite.connect('users.db') as db:
-        await db.execute('INSERT INTO users (email, password) VALUES (?, ?)', (email, password))
-        await db.commit()
+async def init_db():
+    connection = await aiosqlite.connect(DB_NAME)
+    cursor = await connection.cursor()
+
+    await cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            email TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL,
+            leader_name TEXT NOT NULL
+        )
+    ''')
+
+    await connection.commit()
+    await cursor.close()
+    await connection.close()
+
+async def add_user(email, password, leader_name):
+    async with aiosqlite.connect(DB_NAME) as connection:
+        cursor = await connection.cursor()
+        await cursor.execute('INSERT INTO users (email, password, leader_name) VALUES (?, ?, ?)', (email, password, leader_name))
+        await connection.commit()
+        await cursor.close()
