@@ -16,7 +16,8 @@ async def signup(request):
     data = await request.post()
     email = data['email']
     password = data['password']
-    await add_user(email, password)
+    leader_name = data['leader']  # Retrieve leader name from form data
+    await add_user(email, password, leader_name)
     return web.Response(text="Sign up successful")
 
 async def init_app():
@@ -27,3 +28,6 @@ async def init_app():
     return app
 
 app = asyncio.get_event_loop().run_until_complete(init_app())
+
+if __name__ == '__main__':
+    web.run_app(app)
